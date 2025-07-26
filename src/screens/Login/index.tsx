@@ -1,8 +1,12 @@
 import { useState } from "react";
+import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
 import { loginUser } from "../../services/auth";
-import { StyleSheet, View, Text, TextInput, Button } from "react-native";
 
 export default function Login() {
+    const navigation = useNavigation();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -34,6 +38,10 @@ export default function Login() {
                 style={styles.input}
             />
             <Button title="Entrar" onPress={handleLogin} />
+        
+            <TouchableOpacity onPress={() => navigation.navigate('Register' as never)}>
+                <Text style={styles.link}>Criar nova conta</Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -54,5 +62,10 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         padding: 10,
         borderRadius: 5,
-    }
+    },
+    link: {
+        marginTop: 16,
+        color: '#007bff',
+        textAlign: 'center',
+    },
 });

@@ -1,26 +1,35 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-import Home from '../screens/Home';
-import Login from '../screens/Login/Login';
-import Register from '../screens/Register';
-
-export type routesList = {
-    Home: undefined;
-    Register: undefined;
-    Login: undefined;
-};
-
-const Stack = createNativeStackNavigator<routesList>();
+import { onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { autenticacao } from "../services/firebase";
+import { ActivityIndicator, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import AppRoutes from "./AppRoutes";
+import AuthRoutes from "./AuthRoutes";
 
 export default function Routes() {
-    return(
+    const [loading, setLoading] = useState(false);
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(autenticacao, (firebaseUser: any) => {
+            setUser(firebaseUser);
+            setLoading(false);
+        });
+
+        return () => unsubscribe();
+    }, []);
+
+    if(loading) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <ActivityIndicator size="large" />
+            </View>
+        )
+    }
+
+    return (
         <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen name="Login" component={Login} />
-                <Stack.Screen name="Register" component={Register} />
-                <Stack.Screen name="Home" component={Home} />
-            </Stack.Navigator>
+            {user? <AppRoutes /> : <AuthRoutes />}
         </NavigationContainer>
     )
 }
