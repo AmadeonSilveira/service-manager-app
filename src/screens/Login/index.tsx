@@ -17,7 +17,7 @@ export default function Login() {
         try {
             const user = await loginUser(email, password);
             setUser({uid: user.uid, email: user.email || ''});
-            console.log("Login realizado com sucesso");
+            return true;
         } catch (error) {
             console.error("[LOGIN] erro ao fazer login", error);
         }

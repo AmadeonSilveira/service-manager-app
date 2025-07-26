@@ -14,7 +14,7 @@ export default function Register() {
         try {
             const user = await registerUser(email, password);
             setUser({uid: user.uid, email: user.email || ''});
-            console.log("Usuário cadastrado com sucesso");
+            return true;
         } catch (error) {
             console.error("handleRegister", error);
         }

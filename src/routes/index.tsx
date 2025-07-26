@@ -6,7 +6,6 @@ import { useAuth } from "../contexts/AuthContext";
 
 export default function Routes() {
     const { user, loading } = useAuth();
-    console.log("user", user);
 
     if(loading) {
         return (

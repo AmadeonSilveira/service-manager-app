@@ -9,7 +9,7 @@ export async function saveEnterpriseTest() {
             timeInsert: new Date()
         });
         
-        console.log('Empresa salva com ID:', docRef.id);
+        return docRef.id;
     } catch (error) {
         console.error('Erro ao salvar empresa:', error);
     }
