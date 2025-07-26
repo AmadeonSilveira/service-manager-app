@@ -2,14 +2,18 @@ import { useState } from "react";
 import { registerUser } from "../../services/auth";
 import { View, StyleSheet, Text, Button } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const { setUser } = useAuth();
+
     async function handleRegister() {
         try {
-            await registerUser(email, password);
+            const user = await registerUser(email, password);
+            setUser({uid: user.uid, email: user.email || ''});
             console.log("Usuário cadastrado com sucesso");
         } catch (error) {
             console.error("handleRegister", error);

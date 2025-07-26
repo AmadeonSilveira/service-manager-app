@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity } from "rea
 import { useNavigation } from "@react-navigation/native";
 
 import { loginUser } from "../../services/auth";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Login() {
     const navigation = useNavigation();
@@ -10,9 +11,12 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const { setUser } = useAuth();
+
     async function handleLogin() {
         try {
-            await loginUser(email, password);
+            const user = await loginUser(email, password);
+            setUser({uid: user.uid, email: user.email || ''});
             console.log("Login realizado com sucesso");
         } catch (error) {
             console.error("[LOGIN] erro ao fazer login", error);
